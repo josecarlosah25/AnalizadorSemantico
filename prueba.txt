@@ -1,0 +1,44 @@
+int z, t[2], ka[7]:
+bool bandera:
+string cadena,x:
+char za,xa,ya:
+float var,v2:
+
+[void main(){
+	int d,g,p:
+	z=2:
+	d=0:
+	var1=129.34E-21:
+	t[1]=c:
+	x="azul":
+	ka[4]=z*t[1]**z/t[0]:
+	for[56]{
+		z=z+1:
+	}
+	if(z>=23){
+		switch(d){
+			case 1 [cadena="rojo":]
+			break:
+			default[cadena=+"verde"," y ",x:]
+		}
+		var1=133.42:
+	}
+	else{
+		while(d<19){
+			ka[10]=ka[10]+2:
+			d=d+1:
+		}
+		do{
+			ka[2]=ka[2]*2:
+		} while(g<10):
+	}:
+}]
+
+[int golaMundo(){
+	int hola:
+	string mundo:
+	hola=69:
+	mundo= "4.20":
+}]
+
+
