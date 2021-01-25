@@ -1,0 +1,4 @@
+*.out
+tokens.txt
+atomos.txt
+lex.yy.c
