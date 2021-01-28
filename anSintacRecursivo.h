@@ -252,9 +252,19 @@ void S(){
 	}else if(c=='u'){
 		c=getC();
 		U();
+		if(c==':'){
+			c=getC();
+		}else{
+			error(":");
+		}
 		return;
 	}else if(c=='t'){
 		c=getC();
+		if(c==':'){
+			c=getC();
+		}else{
+			error(":");
+		}
 		return;
 	}else if(c=='['){
 		c=getC();
@@ -267,6 +277,11 @@ void S(){
 			c=getC();
 		}else{
 			error("(");
+		}
+		if(c==')'){
+			c=getC();
+		}else{
+			error(")");
 		}
 		if(c==']'){
 			c=getC();
