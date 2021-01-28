@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 FILE *origen;
+TablaSimbolos* simb;
+Temp* temporalInt;
 char c;
 int nError=0;
 int auxSincronia=0;
@@ -50,8 +52,10 @@ char getC(){
 	return car;
 }
 
-void asignaArchivoAtomos(FILE *dir){
+void asignaArchivoAtomos(FILE *dir,TablaSimbolos* tablasimb,Temp* integers){
 	origen=dir;
+	simb=tablasimb;
+	temporalInt=integers;
 	printf("\n--Cadena de atomos leida:\n");
 	c=getC();
 }
@@ -175,22 +179,23 @@ void D(){
 
 //nos va a ayudar a determinar el type que tiene el simbolo en la posicion "p1" 
 int obtenerTipoActual(int p1){
-	int type=buscarPosTablaSimbolos(&tabSimb,p1);
+	int type=buscarPosTablaSimbolos(simb,p1);
 	return type;
 }
 
 //obtiene la posicion de la tabla de simbolos del identificador actual
 int obtenerP(){
-	int p=buscarValor(&temporalIntegers,auxSincronia);
+	int p=buscarValor(temporalInt,auxSincronia);
 	auxSincronia++;
 	return p;
 }
 
 //Verifica tipo y lo asigna
 int VAT(int p1, int t1){
-	int typeActual=obtenTipoActual(p1);
+	int typeActual=obtenerTipoActual(p1);
 	if(typeActual==-1){
 		//asignaType(&tabSim,p1,t1);
+		//printf("\n valor: %d\n",t1);
 		return 0;
 	}else{
 		errorSemantico("Se declaro previamente identificador ya que ya tenia el tipo %d asignado, revisar declaraciones",typeActual);
@@ -202,7 +207,7 @@ void L(int t){
 	int p;
 	if(c=='a'){
 		p=obtenerP();
-		VAT(p,t)
+		VAT(p,t);
 		c=getC();
 		G();
 		C(t);

@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "estructurasTablas/generadorTablas.c"
-#include "anSintacRecursivo.h"
 #include "estructurasTablas/linkedListInteger.h"
+#include "anSintacRecursivo.h"
+
 
 /*Programa que lee un programa y hace el reconocimiento del lenguaje
 	definido por la clase, realiza analisis lexico y sintactico
@@ -168,7 +169,7 @@ int main(int argc,char *argv[])
 	//para probar el tmp: imprimirLinkedList(&temporalIntegers);
 
 	openPrueba=fopen("atomos.txt", "r");
-	asignaArchivoAtomos(openPrueba);
+	asignaArchivoAtomos(openPrueba,&tabSimb,&temporalIntegers);
 	P();
 	printf("\n\n---------Analisis sintactico terminado---------\n");
 	showNumErrores();

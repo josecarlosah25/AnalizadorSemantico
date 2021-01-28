@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int numClave = 0;
 
 typedef struct NodoInt{
@@ -17,6 +18,7 @@ Temp crearTemp(){
 	temporal.head = NULL;
 	return temporal;
 }
+
 
 void insertarInt(Temp* listaInt, int valor){
 	NodoInt* temp_nodo = listaInt->head;
