@@ -125,7 +125,7 @@ int buscarPosTablaSimbolos(TablaSimbolos* tabSimbActual, int posicion){
 void asignarTipo(TablaSimbolos* tabSimbActual, int posicion, int valorToken){
     NodoSimb *temp = tabSimbActual->head;
     while (temp != NULL) {
-    	if(temp->valor == posicion)
+    	if(temp->clave == posicion)
     		temp->tipo = valorToken;
     	else
      		temp = temp->siguiente;
