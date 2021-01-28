@@ -2,14 +2,14 @@ int a, b,c[7]:
 bool bandera:
 char z, x:
 float f1:
-string s:
+string s,sabroso:
 
 [void funcionA()
 	{
 		int d, f:
 		a = 14:
 		b = c:
-		s = "oso":
+		sabroso = "oso":
 		c[1]=a*(b+d)/z**x%f1:
 		for[56]
 		{
@@ -42,7 +42,9 @@ string s:
 	{
 		int hola:
 		string cadena:
+		string hola:
 		hola = 2.54E-5:
 		cadena = "no":
+		variableNoDeclarada=1837:
 	}
 ]
