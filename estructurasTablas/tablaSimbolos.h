@@ -49,7 +49,6 @@ int insertarTablaSimbolos(TablaSimbolos* tabSimbActual, char* valor){
 		//printf("La posicion que ocupa la cadena en la tabla es: %d\n", actual->clave);
 		return actual->clave;
 	}
-	
 
 }
 
@@ -106,3 +105,20 @@ char devolverAtomoSimb(TablaSimbolos* tabSimbActual, int clave){
     }
     return -1;
 }
+
+//Obtener el tipo a partir de la posición de la tabla
+int buscarPosTablaSimbolos(TablaSimbolos* tabSimbActual, int posicion){
+    NodoSimb *temp = tabSimbActual->head;
+    while (temp != NULL) {
+
+        if (temp->clave == posicion){
+            //printf("\nSe encuentra la posicion %d en el Tabla de Simbolos y su tipo es %d \n", cadena, temp->clave);
+            return temp->tipo;
+            //break;
+        }
+        else
+            temp = temp->siguiente;
+    }
+    return -1;
+}
+
