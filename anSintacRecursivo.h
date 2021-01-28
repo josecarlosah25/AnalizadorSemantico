@@ -3,9 +3,11 @@
 FILE *origen;
 char c;
 int nError=0;
+int auxSincronia=0;
 
 char getC();
 void error();
+void errorSemantico();
 void P();
 void YP();
 void DP();
@@ -14,7 +16,7 @@ void VP();
 void D();
 void L();
 void C();
-void V();
+int V();
 void G();
 void S();
 void U();
@@ -37,6 +39,10 @@ void A();
 void CP();
 void ZP();
 void SP();
+
+int obtenerTipoActual(int p1);
+int obtenerP();
+int VAT(int p1, int t1);
 
 char getC(){
 	char car=fgetc(origen);
@@ -152,31 +158,65 @@ void DP(){
 }
 
 void D(){
+	int t;
 	if(c=='b' || c=='c' || c=='f' || c=='n' ||
 		c=='g'){
-		V();
-		L();
+		t=V();
+		if(t==-1){
+			errorSemantico("Tipo de dato invalido");
+			return;
+		}
+		L(t);
 		return;
 	}else{
 		error("b c f n g");
 	}
 }
 
-void L(){
+//nos va a ayudar a determinar el type que tiene el simbolo en la posicion "p1" 
+int obtenerTipoActual(int p1){
+	int type=buscarPosTablaSimbolos(&tabSimb,p1);
+	return type;
+}
+
+//obtiene la posicion de la tabla de simbolos del identificador actual
+int obtenerP(){
+	int p=buscarValor(&temporalIntegers,auxSincronia);
+	auxSincronia++;
+	return p;
+}
+
+//Verifica tipo y lo asigna
+int VAT(int p1, int t1){
+	int typeActual=obtenTipoActual(p1);
+	if(typeActual==-1){
+		//asignaType(&tabSim,p1,t1);
+		return 0;
+	}else{
+		errorSemantico("Se declaro previamente identificador ya que ya tenia el tipo %d asignado, revisar declaraciones",typeActual);
+		return -1;
+	}
+}
+
+void L(int t){
+	int p;
 	if(c=='a'){
+		p=obtenerP();
+		VAT(p,t)
 		c=getC();
 		G();
-		C();
+		C(t);
 		return;
 	}else{
 		error("a");
 	}
 }
 
-void C(){
+
+void C(int t2){
 	if(c==','){
 		c=getC();
-		L();
+		L(t2);
 		return;
 	}else if(c==':'){
 		c=getC();
@@ -186,24 +226,25 @@ void C(){
 	}
 }
 
-void V(){
+int V(){
 	if(c=='b'){
 		c=getC();
-		return;
+		return 0;
 	}else if(c=='c'){
 		c=getC();
-		return;
+		return 3;
 	}else if(c=='f'){
 		c=getC();
-		return;
+		return 8;
 	}else if(c=='n'){
 		c=getC();
-		return;
+		return 11;
 	}else if(c=='g'){
 		c=getC();
-		return;
+		return 13;
 	}else{
 		error("b c f n g");
+		return -1;
 	}	
 }
 
@@ -824,6 +865,11 @@ void SP(){
 void error(char *charEsperado){
 	nError++;
 	printf("\n---Error sintactico: Se esperaba ->|| %s ||<-\tY se leyó ->|| %c ||<-\n\n----------Seguimos leyendo cadena de atomos --------\n",charEsperado,c);
+}
+
+void errorSemantico(char* charEsperado){
+	nError++;
+	printf("\n---Error semantico:%s \n\n----------Seguimos leyendo cadena de atomos --------\n",charEsperado);
 }
 
 void showNumErrores(){
