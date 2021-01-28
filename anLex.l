@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "estructurasTablas/generadorTablas.c"
 #include "anSintacRecursivo.h"
+#include "estructurasTablas/linkedListInteger.h"
 
 /*Programa que lee un programa y hace el reconocimiento del lenguaje
 	definido por la clase, realiza analisis lexico y sintactico
@@ -30,6 +31,8 @@ TablaLiterales ctesReales;
 TablaLiterales cadenas;
 TablaLiterales ctesEnteras;
 TablaSimbolos tabSimb;
+
+Temp temporalIntegers;
 %}
 
 /*Expresiones regulares recurrentes*/
@@ -123,6 +126,7 @@ ident {letras}({letras}|{dig}|_)*
 		valor=insertarTablaSimbolos(&tabSimb,tmp);
 		atomo=devolverAtomoSimb(&tabSimb,valor);
 	}
+	insertarInt(&temporalIntegers,valor);
 	fprintf(archSal,"(%d,%d)\n",clase,valor);
 	fprintf(archAtomos,"%c",atomo);}
 . {printf("======>ERROR: No se reconoció: %s Sigue el analisis\n",yytext);}
@@ -140,7 +144,9 @@ int main(int argc,char *argv[])
 	imprimirTablaCaracteres(simbEsp);
 	imprimirTablaCaracteres(opAsig);
 	imprimirTablaOperadores(opArit);*/
-
+	
+	temporalIntegers=crearTemp();
+	
 	ctesReales = crearTablaLiterales();
 	cadenas = crearTablaLiterales();
 	tabSimb = crearTablaSimbolos();
@@ -158,6 +164,8 @@ int main(int argc,char *argv[])
 
 	fclose(archSal);
 	fclose(archAtomos);
+	
+	//para probar el tmp: imprimirLinkedList(&temporalIntegers);
 
 	openPrueba=fopen("atomos.txt", "r");
 	asignaArchivoAtomos(openPrueba);
