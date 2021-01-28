@@ -1,0 +1,48 @@
+int a, b,c[7]:
+bool bandera:
+char z, x:
+float f1:
+string s:
+
+[void funcionA()
+	{
+		int d, f:
+		a = 14:
+		b = c:
+		s = "oso":
+		c[1]=a*(b+d)/z**x%f1:
+		for[56]
+		{
+			a = a+1:
+		}
+		if(a>12+1)
+		{
+			switch(b)
+			{
+				case 1 [s = "gatuno":]
+				break:
+				default [c[2]=+"kong","godzilla":]
+			}
+			s = "canino":
+		}
+		else
+		{
+			while(c < 9)
+			{
+				bandera = 0:
+			}
+		}:
+		do {
+			f1 = "miau":
+		} while (bandera == 1):
+	}
+]
+
+[int funcion2()
+	{
+		int hola:
+		string cadena:
+		hola = 2.54E-5:
+		cadena = "no":
+	}
+]

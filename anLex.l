@@ -159,11 +159,11 @@ int main(int argc,char *argv[])
 	yylex();
 	imprimirTablaLiterales(cadenas, archSal);
 	imprimirTablaLiterales(ctesReales, archSal);
-	imprimirTablaSimbolos(tabSimb, archSal);
+	
 
 	fprintf(archAtomos,"%c", 126);
 
-	fclose(archSal);
+	
 	fclose(archAtomos);
 	
 	//para probar el tmp: imprimirLinkedList(&temporalIntegers);
@@ -173,4 +173,7 @@ int main(int argc,char *argv[])
 	P();
 	printf("\n\n---------Analisis sintactico terminado---------\n");
 	showNumErrores();
+
+	imprimirTablaSimbolos(tabSimb, archSal);
+	fclose(archSal);
 }

@@ -1,12 +1,13 @@
 #include <stdio.h>
 
-FILE *origen;
+FILE* origen;
 TablaSimbolos* simb;
 Temp* temporalInt;
 char c;
 int nError=0;
 int auxSincronia=0;
 
+void asignaArchivoAtomos(FILE *dir,TablaSimbolos* tablasimb,Temp* integers);
 char getC();
 void error();
 void errorSemantico();
@@ -47,6 +48,7 @@ int obtenerP();
 int VAT(int p1, int t1);
 
 char getC(){
+	
 	char car=fgetc(origen);
 	printf("%c",car);
 	return car;
@@ -58,6 +60,7 @@ void asignaArchivoAtomos(FILE *dir,TablaSimbolos* tablasimb,Temp* integers){
 	temporalInt=integers;
 	printf("\n--Cadena de atomos leida:\n");
 	c=getC();
+	
 }
 
 void P(){
@@ -194,11 +197,14 @@ int obtenerP(){
 int VAT(int p1, int t1){
 	int typeActual=obtenerTipoActual(p1);
 	if(typeActual==-1){
-		//asignaType(&tabSim,p1,t1);
+		
+		asignarTipo(simb,p1,t1);
+
 		//printf("\n valor: %d\n",t1);
 		return 0;
 	}else{
-		errorSemantico("Se declaro previamente identificador ya que ya tenia el tipo %d asignado, revisar declaraciones",typeActual);
+		printf("\n id=%d : tipo actual:%d tipo a poner:%d\n",p1,typeActual,t1);
+		errorSemantico("Se declaro previamente identificador ya que ya tenia el tipo asignado, revisar declaraciones");
 		return -1;
 	}
 }
