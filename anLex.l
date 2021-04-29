@@ -2,17 +2,18 @@
 #include <string.h>
 #include <stdlib.h>
 #include "estructurasTablas/generadorTablas.c"
-#include "anSintacRecursivo.h"
 #include "estructurasTablas/linkedListInteger.h"
+#include "anSintacRecursivo.h"
+
 
 /*Programa que lee un programa y hace el reconocimiento del lenguaje
-	definido por la clase, realiza analisis lexico y sintactico
+	definido por la clase, realiza analisis lexico, sintactico y semantico
 
 Elaborado por : 
 	-Alcántara Hoyos José Carlos
 	-Vargas Guerrero Armando
 
-Fecha de entrega : 3 de Diciembre de 2020
+Fecha de entrega : 28 de Enero de 2021
 */
 
 FILE *archSal;
@@ -158,18 +159,21 @@ int main(int argc,char *argv[])
 	yylex();
 	imprimirTablaLiterales(cadenas, archSal);
 	imprimirTablaLiterales(ctesReales, archSal);
-	imprimirTablaSimbolos(tabSimb, archSal);
+	
 
 	fprintf(archAtomos,"%c", 126);
 
-	fclose(archSal);
+	
 	fclose(archAtomos);
 	
-	//para probar el tmp: imprimirLinkedList(&temporalIntegers);
+	//imprimirLinkedList(&temporalIntegers);
 
 	openPrueba=fopen("atomos.txt", "r");
-	asignaArchivoAtomos(openPrueba);
+	asignaArchivoAtomos(openPrueba,&tabSimb,&temporalIntegers);
 	P();
-	printf("\n\n---------Analisis sintactico terminado---------\n");
+	printf("\n\n---------Analisis terminado---------\n");
 	showNumErrores();
+
+	imprimirTablaSimbolos(tabSimb, archSal);
+	fclose(archSal);
 }

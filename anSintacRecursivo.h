@@ -1,20 +1,26 @@
 #include <stdio.h>
 
-FILE *origen;
+FILE* origen;
+TablaSimbolos* simb;
+Temp* temporalInt;
 char c;
 int nError=0;
+int nErrorS=0;
+int auxSincronia=0;
 
+void asignaArchivoAtomos(FILE *dir,TablaSimbolos* tablasimb,Temp* integers);
 char getC();
 void error();
+void errorSemantico();
 void P();
 void YP();
 void DP();
 void Y();
-void VP();
+int VP();
 void D();
 void L();
 void C();
-void V();
+int V();
 void G();
 void S();
 void U();
@@ -38,16 +44,25 @@ void CP();
 void ZP();
 void SP();
 
+int obtenerTipoActual(int p1);
+int obtenerP();
+int VAT(int p1, int t1);
+int VD(int p1);
+
 char getC(){
+	
 	char car=fgetc(origen);
 	printf("%c",car);
 	return car;
 }
 
-void asignaArchivoAtomos(FILE *dir){
+void asignaArchivoAtomos(FILE *dir,TablaSimbolos* tablasimb,Temp* integers){
 	origen=dir;
+	simb=tablasimb;
+	temporalInt=integers;
 	printf("\n--Cadena de atomos leida:\n");
 	c=getC();
+	
 }
 
 void P(){
@@ -77,11 +92,16 @@ void YP(){
 }
 
 void Y(){
+	int t;
+	int p;
 	if(c=='['){
+		
 		c=getC();
-		VP();
+		t= VP();
 		
 		if(c=='a'){
+			p=obtenerP();
+			VAT(p,t);
 			c=getC();
 		}else{
 			error("a");
@@ -124,13 +144,12 @@ void Y(){
 	}
 }
 
-void VP(){
+int VP(){
 	if(c=='b' || c=='c' || c=='f' || c=='n' || c=='g'){
-		V();
-		return;
+		return V();
 	}else if(c=='o'){
 		c=getC();
-		return;
+		return 16;
 	}else{
 		error("b c f n g o ");
 	}
@@ -152,31 +171,69 @@ void DP(){
 }
 
 void D(){
+	int t;
 	if(c=='b' || c=='c' || c=='f' || c=='n' ||
 		c=='g'){
-		V();
-		L();
+		t=V();
+		if(t==-1){
+			errorSemantico("Tipo de dato invalido");
+			return;
+		}
+		L(t);
 		return;
 	}else{
 		error("b c f n g");
 	}
 }
 
-void L(){
+//nos va a ayudar a determinar el type que tiene el simbolo en la posicion "p1" 
+int obtenerTipoActual(int p1){
+	int type=buscarPosTablaSimbolos(simb,p1);
+	return type;
+}
+
+//obtiene la posicion de la tabla de simbolos del identificador actual
+int obtenerP(){
+	int p=buscarValor(temporalInt,auxSincronia);
+	auxSincronia++;
+	return p;
+}
+
+//Verifica tipo y lo asigna
+int VAT(int p1, int t1){
+	int typeActual=obtenerTipoActual(p1);
+	if(typeActual==-1){
+		
+		asignarTipo(simb,p1,t1);
+
+		return 0;
+	}else{
+		//printf("	%d\n",auxSincronia);
+		printf("\n\n =====Posicion en la tabla de simbolos=%d : tipo actual:%d tipo a poner:%d ",p1,typeActual,t1);
+		errorSemantico("Se declaro previamente identificador ya que ya tenia el tipo asignado, revisar declaraciones");
+		return -1;
+	}
+}
+
+void L(int t){
+	int p;
 	if(c=='a'){
+		p=obtenerP();
+		VAT(p,t);
 		c=getC();
 		G();
-		C();
+		C(t);
 		return;
 	}else{
 		error("a");
 	}
 }
 
-void C(){
+
+void C(int t2){
 	if(c==','){
 		c=getC();
-		L();
+		L(t2);
 		return;
 	}else if(c==':'){
 		c=getC();
@@ -186,24 +243,25 @@ void C(){
 	}
 }
 
-void V(){
+int V(){
 	if(c=='b'){
 		c=getC();
-		return;
+		return 0;
 	}else if(c=='c'){
 		c=getC();
-		return;
+		return 3;
 	}else if(c=='f'){
 		c=getC();
-		return;
+		return 8;
 	}else if(c=='n'){
 		c=getC();
-		return;
+		return 11;
 	}else if(c=='g'){
 		c=getC();
-		return;
+		return 13;
 	}else{
 		error("b c f n g");
+		return -1;
 	}	
 }
 
@@ -231,6 +289,7 @@ void G(){
 }
 
 void S(){
+	int p;
 	if(c=='a'){
 		A();
 		return;
@@ -269,6 +328,8 @@ void S(){
 	}else if(c=='['){
 		c=getC();
 		if(c=='a'){
+			p=obtenerP();
+			VD(p);
 			c=getC();
 		}else{
 			error("a");
@@ -392,7 +453,21 @@ void H(){
 	}
 }
 
+int VD(int p1){
+	int typeActual=obtenerTipoActual(p1);
+	if(typeActual!=-1){
+
+		return 0;
+	}else{
+		//printf("	%d\n",auxSincronia);
+		printf("\n\n =======Posicion en tabla de simbolos=%d ",p1);
+		errorSemantico("NO SE DECLARO identificador antes de usarse, revisar declaraciones");
+		return -1;
+	}
+}
+
 void X(){
+	int p;
 	if(c=='x'){
 		c=getC();
 		if(c=='('){
@@ -402,6 +477,8 @@ void X(){
 		}
 
 		if(c=='a'){
+			p=obtenerP();
+			VD(p);
 			c=getC();
 		}else{
 			error("a");
@@ -696,6 +773,7 @@ void TP(){
 } 
 
 void F(){
+	int p;
 	if (c == '('){
 		c = getC();
 		E();
@@ -706,6 +784,8 @@ void F(){
 		return;
 
 	} else if (c == 'a'){
+		p=obtenerP();
+		VD(p);
 		c = getC();
 		G();
 		return;
@@ -720,8 +800,11 @@ void F(){
 
 	} else if (c == '['){
 		c = getC();
-		if (c == 'a')
+		if (c == 'a'){
+			p=obtenerP();
+			VD(p);
 			c = getC();
+		}
 		else
 			error("a");
 
@@ -747,7 +830,10 @@ void F(){
 }
 
 void A(){
+	int p;
 	if (c == 'a'){
+		p=obtenerP();
+		VD(p);
 		c = getC();
 		G();
 		if (c == '=')
@@ -792,11 +878,14 @@ void CP(){
 }
 
 void ZP(){
+	int p;
 	if (c == 's'){
 		c = getC();
 		return;
 
 	} else if (c == 'a'){
+		p=obtenerP();
+		VD(p);
 		c = getC();
 		G();
 		return;
@@ -826,7 +915,13 @@ void error(char *charEsperado){
 	printf("\n---Error sintactico: Se esperaba ->|| %s ||<-\tY se leyó ->|| %c ||<-\n\n----------Seguimos leyendo cadena de atomos --------\n",charEsperado,c);
 }
 
+void errorSemantico(char* charEsperado){
+	nErrorS++;
+	printf("---Error semantico:%s \n\n----------Seguimos leyendo cadena de atomos --------\n",charEsperado);
+}
+
 void showNumErrores(){
 	printf("Errores sintacticos: %d\n",nError);
+	printf("Errores semanticos: %d\n",nErrorS );
 }
 

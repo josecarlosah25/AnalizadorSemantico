@@ -8,7 +8,7 @@ string cad, cad1, cad2:
 @ Funciones
 [ void func1()
   {
-	int a,b:
+	int ax,bx:
 	a=12:
 	b=a%3:
 	return:
